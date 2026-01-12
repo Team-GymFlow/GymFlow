@@ -1,0 +1,49 @@
+Visual Studio,
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+Build results,
+bin/
+obj/
+out/
+
+NuGet,
+*.nupkg
+packages/
+*.snupkg
+NuGet v3,
+*.nuget.props
+*.nuget.targets
+
+Rider IDE,
+.idea/
+*.sln.iml
+
+Visual Studio Code,
+.vscode/
+
+Logs,
+*.log
+logs/
+
+OS generated files,
+.DS_Store
+Thumbs.db
+
+Test result files,
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+Temporary files,
+*.tmp
+*.temp
+*.cache
+*.bak
+
+Project evaluation & VS hidden data,
+ProjectEvaluation/
