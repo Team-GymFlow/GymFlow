@@ -1,7 +1,36 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B9CECF30-2495-4B9C-A3A7-C529CA71892A}|API\\API.csproj|c:\\users\\erenm\\desktop\\systemutveckling\\gymflow\\backend\\api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9CECF30-2495-4B9C-A3A7-C529CA71892A}|API\\API.csproj|solutionrelative:api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{441CE284-4851-4E85-8B99-D36595D51550}|Infrastructure\\Infrastructure.csproj|c:\\users\\erenm\\desktop\\systemutveckling\\gymflow\\backend\\infrastructure\\database\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{441CE284-4851-4E85-8B99-D36595D51550}|Infrastructure\\Infrastructure.csproj|solutionrelative:infrastructure\\database\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C5B5AB6A-965F-4F32-A3DE-F90D4F144566}|Domain\\Domain.csproj|c:\\users\\erenm\\desktop\\systemutveckling\\gymflow\\backend\\domain\\models\\exercise.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C5B5AB6A-965F-4F32-A3DE-F90D4F144566}|Domain\\Domain.csproj|solutionrelative:domain\\models\\exercise.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C5B5AB6A-965F-4F32-A3DE-F90D4F144566}|Domain\\Domain.csproj|c:\\users\\erenm\\desktop\\systemutveckling\\gymflow\\backend\\domain\\models\\musclegroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C5B5AB6A-965F-4F32-A3DE-F90D4F144566}|Domain\\Domain.csproj|solutionrelative:domain\\models\\musclegroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C5B5AB6A-965F-4F32-A3DE-F90D4F144566}|Domain\\Domain.csproj|c:\\users\\erenm\\desktop\\systemutveckling\\gymflow\\backend\\domain\\enums\\musclegrouprole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C5B5AB6A-965F-4F32-A3DE-F90D4F144566}|Domain\\Domain.csproj|solutionrelative:domain\\enums\\musclegrouprole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C5B5AB6A-965F-4F32-A3DE-F90D4F144566}|Domain\\Domain.csproj|c:\\users\\erenm\\desktop\\systemutveckling\\gymflow\\backend\\domain\\models\\exercisemusclegroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C5B5AB6A-965F-4F32-A3DE-F90D4F144566}|Domain\\Domain.csproj|solutionrelative:domain\\models\\exercisemusclegroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C5B5AB6A-965F-4F32-A3DE-F90D4F144566}|Domain\\Domain.csproj|c:\\users\\erenm\\desktop\\systemutveckling\\gymflow\\backend\\domain\\enums\\difficultylevel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C5B5AB6A-965F-4F32-A3DE-F90D4F144566}|Domain\\Domain.csproj|solutionrelative:domain\\enums\\difficultylevel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -22,6 +51,97 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\API\\Program.cs",
+              "RelativeDocumentMoniker": "API\\Program.cs",
+              "ToolTip": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\API\\Program.cs",
+              "RelativeToolTip": "API\\Program.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA0AAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T16:54:11.051Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\Infrastructure\\Database\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\Database\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\Infrastructure\\Database\\AppDbContext.cs",
+              "RelativeToolTip": "Infrastructure\\Database\\AppDbContext.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAkwCsAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T14:23:58.164Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MuscleGroupRole.cs",
+              "DocumentMoniker": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\Domain\\Enums\\MuscleGroupRole.cs",
+              "RelativeDocumentMoniker": "Domain\\Enums\\MuscleGroupRole.cs",
+              "ToolTip": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\Domain\\Enums\\MuscleGroupRole.cs",
+              "RelativeToolTip": "Domain\\Enums\\MuscleGroupRole.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T14:17:10.628Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ExerciseMuscleGroup.cs",
+              "DocumentMoniker": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\Domain\\Models\\ExerciseMuscleGroup.cs",
+              "RelativeDocumentMoniker": "Domain\\Models\\ExerciseMuscleGroup.cs",
+              "ToolTip": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\Domain\\Models\\ExerciseMuscleGroup.cs",
+              "RelativeToolTip": "Domain\\Models\\ExerciseMuscleGroup.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T14:15:14.326Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DifficultyLevel.cs",
+              "DocumentMoniker": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\Domain\\Enums\\DifficultyLevel.cs",
+              "RelativeDocumentMoniker": "Domain\\Enums\\DifficultyLevel.cs",
+              "ToolTip": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\Domain\\Enums\\DifficultyLevel.cs",
+              "RelativeToolTip": "Domain\\Enums\\DifficultyLevel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T14:13:18.49Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Exercise.cs",
+              "DocumentMoniker": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\Domain\\Models\\Exercise.cs",
+              "RelativeDocumentMoniker": "Domain\\Models\\Exercise.cs",
+              "ToolTip": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\Domain\\Models\\Exercise.cs",
+              "RelativeToolTip": "Domain\\Models\\Exercise.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAA8AAAB1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T14:12:17.875Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MuscleGroup.cs",
+              "DocumentMoniker": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\Domain\\Models\\MuscleGroup.cs",
+              "RelativeDocumentMoniker": "Domain\\Models\\MuscleGroup.cs",
+              "ToolTip": "C:\\Users\\erenm\\Desktop\\Systemutveckling\\GymFlow\\Backend\\Domain\\Models\\MuscleGroup.cs",
+              "RelativeToolTip": "Domain\\Models\\MuscleGroup.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAB1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T14:11:34.776Z",
+              "EditorCaption": ""
             }
           ]
         }
