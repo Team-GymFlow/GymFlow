@@ -1,31 +1,31 @@
 ﻿using Domain.Models;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-//using System.Data.Entity;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Database
 {
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
-       : base(options)
+            : base(options)
         {
         }
 
+        // ===== ANNAS BEFINTLIGA DBSETS (RÖR EJ) =====
         public DbSet<Exercise> Exercises => Set<Exercise>();
         public DbSet<MuscleGroup> MuscleGroups => Set<MuscleGroup>();
         public DbSet<ExerciseMuscleGroup> ExerciseMuscleGroups => Set<ExerciseMuscleGroup>();
+
+        // ===== ERA NYA DBSETS =====
+        public DbSet<TaskItem> Tasks => Set<TaskItem>();
+        public DbSet<Project> Projects => Set<Project>();
+        public DbSet<User> Users => Set<User>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Composite key for junction table
+            // ===== ANNAS KONFIGURATION (RÖR EJ) =====
             modelBuilder.Entity<ExerciseMuscleGroup>()
                 .HasKey(emg => new { emg.ExerciseId, emg.MuscleGroupId });
 
@@ -39,10 +39,16 @@ namespace Infrastructure.Database
                 .WithMany(m => m.ExerciseMuscleGroups)
                 .HasForeignKey(emg => emg.MuscleGroupId);
 
-            // Store enum as string (important!)
             modelBuilder.Entity<Exercise>()
                 .Property(e => e.DifficultyLevel)
                 .HasConversion<string>();
+
+            // ===== ERA NYA RELATIONER =====
+            modelBuilder.Entity<Project>()
+                .HasMany(p => p.Tasks)
+                .WithOne(t => t.Project)
+                .HasForeignKey(t => t.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
