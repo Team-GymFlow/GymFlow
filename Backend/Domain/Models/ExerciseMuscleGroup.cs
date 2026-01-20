@@ -15,8 +15,8 @@ namespace Domain.Models
         MuscleGroupRole MuscleGroupRole { get; set; }
        
 
-        public required Exercise Exercise { get; set; }
-        public required MuscleGroup MuscleGroup { get; set; }
+        public Exercise? Exercise { get; set; }
+        public MuscleGroup? MuscleGroup { get; set; }
 
     }
 }
