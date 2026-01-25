@@ -1,5 +1,10 @@
+<<<<<<< HEAD
+﻿using Domain.Entities;
+using Domain.Models;
+=======
 ﻿using Domain.Models;
 using Domain.Entities;
+>>>>>>> feature/repository-and-services
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database
@@ -11,12 +16,20 @@ namespace Infrastructure.Database
         {
         }
 
+<<<<<<< HEAD
+        // ===== ANNAS DBSETS =====
+=======
         // ===== ANNAS BEFINTLIGA DBSETS (RÖR EJ) =====
+>>>>>>> feature/repository-and-services
         public DbSet<Exercise> Exercises => Set<Exercise>();
         public DbSet<MuscleGroup> MuscleGroups => Set<MuscleGroup>();
         public DbSet<ExerciseMuscleGroup> ExerciseMuscleGroups => Set<ExerciseMuscleGroup>();
 
+<<<<<<< HEAD
+        // ===== ERA DBSETS =====
+=======
         // ===== ERA NYA DBSETS =====
+>>>>>>> feature/repository-and-services
         public DbSet<TaskItem> Tasks => Set<TaskItem>();
         public DbSet<Project> Projects => Set<Project>();
         public DbSet<User> Users => Set<User>();
@@ -25,7 +38,11 @@ namespace Infrastructure.Database
         {
             base.OnModelCreating(modelBuilder);
 
+<<<<<<< HEAD
+            // ===== ANNAS KONFIGURATION =====
+=======
             // ===== ANNAS KONFIGURATION (RÖR EJ) =====
+>>>>>>> feature/repository-and-services
             modelBuilder.Entity<ExerciseMuscleGroup>()
                 .HasKey(emg => new { emg.ExerciseId, emg.MuscleGroupId });
 
@@ -43,7 +60,11 @@ namespace Infrastructure.Database
                 .Property(e => e.DifficultyLevel)
                 .HasConversion<string>();
 
+<<<<<<< HEAD
+            // ===== ERA RELATIONER =====
+=======
             // ===== ERA NYA RELATIONER =====
+>>>>>>> feature/repository-and-services
             modelBuilder.Entity<Project>()
                 .HasMany(p => p.Tasks)
                 .WithOne(t => t.Project)

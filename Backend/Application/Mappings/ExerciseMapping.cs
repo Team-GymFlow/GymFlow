@@ -25,4 +25,8 @@ public static class ExerciseMapping
             DifficultyLevel = Enum.Parse<DifficultyLevel>(dto.DifficultyLevel)
         };
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> feature/repository-and-services

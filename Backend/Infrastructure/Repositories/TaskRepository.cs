@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+﻿using Application.Interfaces;
+=======
 using Application.Interfaces;
+>>>>>>> feature/repository-and-services
 using Domain.Entities;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +19,24 @@ public class TaskRepository : ITaskRepository
     }
 
     public async Task<IEnumerable<TaskItem>> GetAllAsync()
+<<<<<<< HEAD
+    {
+        return await _context.Tasks
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task<TaskItem?> GetByIdAsync(int id)
+    {
+        return await _context.Tasks
+            .FirstOrDefaultAsync(t => t.Id == id);
+    }
+=======
         => await _context.Tasks.ToListAsync();
 
     public async Task<TaskItem?> GetByIdAsync(int id)
         => await _context.Tasks.FindAsync(id);
+>>>>>>> feature/repository-and-services
 
     public async Task AddAsync(TaskItem task)
     {
