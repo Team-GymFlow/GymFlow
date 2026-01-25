@@ -13,8 +13,4 @@ public class UpdateExerciseDto
 
     [Required]
     public string DifficultyLevel { get; set; } = null!;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> feature/repository-and-services
