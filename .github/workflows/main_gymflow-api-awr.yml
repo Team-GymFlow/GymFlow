@@ -3,7 +3,7 @@ name: Build and deploy ASP.NET Core app to Azure Web App - GymFlow-Api-AWR
 on:
   push:
     branches:
-      - Gruppen
+      - main
   workflow_dispatch:
 
 jobs:
@@ -57,3 +57,4 @@ jobs:
           app-name: GymFlow-Api-AWR
           slot-name: Production
           package: .
+
