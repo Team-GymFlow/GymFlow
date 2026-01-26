@@ -1,4 +1,4 @@
-name: Build and deploy ASP.NET Core app to Azure Web App - GymFlow-Api-AWR
+name: Build and deploy ASP.Net Core app to Azure Web App - GymFlow-Api-AWR
 
 on:
   push:
@@ -6,45 +6,49 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup .NET
+      - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.x'
 
-      - name: Restore
-        run: dotnet restore Backend/API/API.csproj
+      - name: Build with dotnet
+        run: dotnet build Backend/API/API.csproj --configuration Release
 
-      - name: Build
-        run: dotnet build Backend/API/API.csproj --configuration Release --no-restore
+      - name: dotnet publish
+        run: dotnet publish Backend/API/API.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
-      - name: Publish
-        run: dotnet publish Backend/API/API.csproj -c Release -o publish
-
-      - name: Upload artifact
+      - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: api
-          path: publish
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
     runs-on: windows-latest
     needs: build
 
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
-      - name: Download artifact
+      - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: api
+          name: .net-app
 
-      - name: Azure Login
+      - name: Login to Azure
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_93AFA319453F468FBD0346AF08F15804 }}
@@ -57,4 +61,3 @@ jobs:
           app-name: GymFlow-Api-AWR
           slot-name: Production
           package: .
-
