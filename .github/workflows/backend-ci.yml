@@ -1,0 +1,32 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [ "Controller" ]
+  pull_request:
+    branches: [ "Controller" ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Restore
+        run: dotnet restore
+        working-directory: Backend
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+        working-directory: Backend
+
+      - name: Test
+        run: dotnet test --no-build -c Release
+        working-directory: Backend
