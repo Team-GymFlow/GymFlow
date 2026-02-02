@@ -24,6 +24,8 @@ builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<UserService>();
 
+
+
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
