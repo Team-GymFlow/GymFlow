@@ -55,7 +55,7 @@ builder.Services.AddSwaggerGen();
 
 var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection") ??
-    Environment.GetEnvironmentVariable("DefaultConnection");
+    Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
 
 if (string.IsNullOrEmpty(connectionString))
 {
@@ -65,6 +65,7 @@ if (string.IsNullOrEmpty(connectionString))
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString)
 );
+
 
 //
 // =======================
