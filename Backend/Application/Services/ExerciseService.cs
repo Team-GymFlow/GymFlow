@@ -1,38 +1,38 @@
-﻿using Application.DTOs.Projects;
+﻿using Application.DTOs.Exercises;
 using Application.Interfaces;
 using Application.Mappings;
 
 namespace Application.Services;
 
-public class ProjectService
+public class ExerciseService
 {
-    private readonly IProjectRepository _repo;
+    private readonly IExerciseRepository _repo;
 
-    public ProjectService(IProjectRepository repo)
+    public ExerciseService(IExerciseRepository repo)
     {
         _repo = repo;
     }
 
-    public async Task<IEnumerable<ProjectDto>> GetAllAsync()
+    public async Task<IEnumerable<ExerciseDto>> GetAllAsync()
     {
-        var projects = await _repo.GetAllAsync();
-        return projects.Select(p => p.ToDto());
+        var exercises = await _repo.GetAllAsync();
+        return exercises.Select(e => e.ToDto());
     }
 
-    public async Task<ProjectDto?> GetByIdAsync(int id)
+    public async Task<ExerciseDto?> GetByIdAsync(int id)
     {
-        var project = await _repo.GetByIdAsync(id);
-        return project is null ? null : project.ToDto();
+        var exercise = await _repo.GetByIdAsync(id);
+        return exercise is null ? null : exercise.ToDto();
     }
 
-    public async Task<ProjectDto> CreateAsync(ProjectCreateDto dto)
+    public async Task<ExerciseDto> CreateAsync(ExerciseCreateDto dto)
     {
         var entity = dto.ToEntity();
         await _repo.AddAsync(entity);
         return entity.ToDto();
     }
 
-    public async Task<bool> UpdateAsync(int id, ProjectUpdateDto dto)
+    public async Task<bool> UpdateAsync(int id, ExerciseUpdateDto dto)
     {
         var existing = await _repo.GetByIdAsync(id);
         if (existing is null) return false;

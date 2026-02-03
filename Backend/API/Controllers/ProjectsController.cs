@@ -1,5 +1,5 @@
-﻿using Application.Services;
-using Domain.Entities;
+﻿using Application.DTOs.Projects;
+using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -27,16 +27,16 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Project project)
+    public async Task<IActionResult> Create([FromBody] ProjectCreateDto dto)
     {
-        var created = await _service.CreateAsync(project);
+        var created = await _service.CreateAsync(dto);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, [FromBody] Project project)
+    public async Task<IActionResult> Update(int id, [FromBody] ProjectUpdateDto dto)
     {
-        var ok = await _service.UpdateAsync(id, project);
+        var ok = await _service.UpdateAsync(id, dto);
         return ok ? NoContent() : NotFound();
     }
 
