@@ -1,7 +1,6 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Task;
 using Application.Interfaces;
-using Domain.Entities;
-using Domain.Models;
+using Application.Mappings;
 
 namespace Application.Services;
 
@@ -14,25 +13,23 @@ public class TaskService
         _repo = repo;
     }
 
-    public async Task<IEnumerable<TaskItem>> GetAllAsync()
-        => await _repo.GetAllAsync();
-
-    public async Task<TaskItem?> GetByIdAsync(int id)
-        => await _repo.GetByIdAsync(id);
-
-    public async Task<TaskItem> CreateAsync(TaskCreateDto dto)
+    public async Task<IEnumerable<TaskDto>> GetAllAsync()
     {
-        var task = new TaskItem
-        {
-            Title = dto.Title,
-            Description = dto.Description,
-            ProjectId = dto.ProjectId,
-            Status = "New",
-            CreatedAt = DateTime.UtcNow
-        };
+        var tasks = await _repo.GetAllAsync();
+        return tasks.Select(t => t.ToDto());
+    }
 
-        await _repo.AddAsync(task);
-        return task;
+    public async Task<TaskDto?> GetByIdAsync(int id)
+    {
+        var task = await _repo.GetByIdAsync(id);
+        return task is null ? null : task.ToDto();
+    }
+
+    public async Task<TaskDto> CreateAsync(TaskCreateDto dto)
+    {
+        var entity = dto.ToEntity();
+        await _repo.AddAsync(entity);
+        return entity.ToDto();
     }
 
     public async Task<bool> UpdateAsync(int id, TaskUpdateDto dto)
@@ -40,11 +37,7 @@ public class TaskService
         var existing = await _repo.GetByIdAsync(id);
         if (existing is null) return false;
 
-        existing.Title = dto.Title;
-        existing.Description = dto.Description;
-        existing.Status = dto.Status;
-        existing.ProjectId = dto.ProjectId;
-
+        dto.UpdateEntity(existing);
         await _repo.UpdateAsync(existing);
         return true;
     }
