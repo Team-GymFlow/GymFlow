@@ -6,6 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend",
+        policy =>
+        {
+            policy
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 // Controllers
 builder.Services.AddControllers();
 
@@ -32,10 +44,14 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseRouting();
+
+app.UseCors("Frontend");
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
