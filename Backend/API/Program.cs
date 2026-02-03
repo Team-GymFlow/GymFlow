@@ -47,19 +47,37 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// DbContext (Azure SQL via Render ENV)
+//
+// =======================
+// DB CONTEXT (Render + Azure safe)
+// =======================
+//
+
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection") ??
+    Environment.GetEnvironmentVariable("DefaultConnection");
+
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new Exception("❌ DefaultConnection missing in Render environment");
+}
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    )
+    options.UseSqlServer(connectionString)
 );
 
-// Dependency Injection - Repositories
+//
+// =======================
+// DEPENDENCY INJECTION
+// =======================
+//
+
+// Repositories
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-// Dependency Injection - Services
+// Services
 builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<UserService>();
@@ -72,11 +90,14 @@ var app = builder.Build();
 // =======================
 //
 
+// Show real errors (important for Render)
+app.UseDeveloperExceptionPage();
+
 app.UseRouting();
 
 app.UseCors("Frontend");
 
-// Swagger (always enabled)
+// Swagger always ON
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -92,7 +113,7 @@ app.MapControllers();
 
 //
 // =======================
-// SIMPLE HEALTH CHECK
+// HEALTH CHECK
 // =======================
 //
 
