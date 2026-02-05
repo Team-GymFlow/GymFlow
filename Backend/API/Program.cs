@@ -36,12 +36,13 @@ builder.Services.AddControllers();
 // 🔥 CORS – allow EVERYTHING (for dev)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    options.AddDefaultPolicy(policy =>
     {
         policy
-            .AllowAnyOrigin()
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .SetIsOriginAllowed(origin => true)
+            .AllowCredentials();
     });
 });
 
@@ -96,7 +97,7 @@ var app = builder.Build();
 // =======================
 //
 
-app.UseCors("AllowFrontend"); // 🔥 MÅSTE VARA FÖRST
+app.UseCors();
 
 app.UseRouting();
 
