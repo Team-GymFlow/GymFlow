@@ -1,10 +1,9 @@
-import { NavLink } from "react-router-dom";
-
-export default function Navbar() {
+const Navbar = () => {
   return (
-    <nav>
-      <NavLink to="/">Home</NavLink>
-      <NavLink to="/exercises">Exercises</NavLink>
+    <nav style={{ padding: "1rem", fontSize: "1.5rem" }}>
+      GymFlow
     </nav>
   );
-}
+};
+
+export default Navbar;

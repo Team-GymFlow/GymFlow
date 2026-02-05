@@ -4,7 +4,7 @@ import Exercises from "../pages/Exercises";
 import ExerciseDetails from "../pages/ExerciseDetails";
 import NotFound from "../pages/NotFound";
 
-export default function AppRouter() {
+const AppRouter = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -13,4 +13,6 @@ export default function AppRouter() {
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
-}
+};
+
+export default AppRouter;

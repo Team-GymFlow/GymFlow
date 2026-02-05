@@ -1,7 +1,6 @@
-import axios from "axios";
+const BASE = "https://gymflow-35he.onrender.com/api";
 
-const API = import.meta.env.VITE_API_BASE;
-
-export default axios.create({
-  baseURL: API
-});
+export const getExercises = async () => {
+  const res = await fetch(`${BASE}/exercises`);
+  return res.json();
+};
