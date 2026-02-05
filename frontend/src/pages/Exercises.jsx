@@ -3,11 +3,17 @@ import { getExercises } from "../services/api";
 import { Link } from "react-router-dom";
 
 const Exercises = () => {
+  console.log("🔥 EXERCISES COMPONENT RENDERED");
+
   const [exercises, setExercises] = useState([]);
 
   useEffect(() => {
-    getExercises().then(setExercises);
-  }, []);
+  getExercises().then(data => {
+    console.log("EXERCISES FROM API:", data);
+    setExercises(data);
+  });
+}, []);
+
 
   return (
     <div>
