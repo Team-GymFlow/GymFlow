@@ -39,12 +39,16 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
     {
         policy
+            .WithOrigins(
+                "http://localhost:5173",
+                "https://gymflow-frontend.onrender.com"
+            )
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .SetIsOriginAllowed(origin => true)
             .AllowCredentials();
     });
 });
+
 
 // FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
@@ -91,11 +95,11 @@ builder.Services.AddScoped<ExerciseService>();
 
 var app = builder.Build();
 
-//
-// =======================
-// MIDDLEWARE PIPELINE
-// =======================
-//
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseCors();
 
