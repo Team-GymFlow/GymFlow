@@ -34,7 +34,10 @@ const Exercises = () => {
             }}
           >
             <h3>{e.name}</h3>
-            <p style={{ opacity: 0.6 }}>{e.muscleGroup}</p>
+
+            {/* Backend skickar description + difficultyLevel */}
+            <p style={{ opacity: 0.6 }}>{e.description}</p>
+            <small style={{ opacity: 0.4 }}>{e.difficultyLevel}</small>
           </Link>
         ))}
       </div>
