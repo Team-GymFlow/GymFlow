@@ -33,7 +33,7 @@ if (!string.IsNullOrEmpty(port))
 // CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("Frontend", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
         policy
             .AllowAnyOrigin()
@@ -41,6 +41,7 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+
 
 // Controllers
 builder.Services.AddControllers();
@@ -79,10 +80,14 @@ builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
 
+
 // Services
 builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ExerciseService>();
+
+
 
 
 
@@ -92,12 +97,14 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseCors("AllowFrontend");   // 🔥 FÖRST
 
-// app.UseHttpsRedirection();
+app.UseRouting();
 
 app.UseAuthorization();
+
 app.MapControllers();
+
+app.MapGet("/", () => "GymFlow API running 🚀");
 
 app.Run();
