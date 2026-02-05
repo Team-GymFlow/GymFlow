@@ -30,7 +30,10 @@ if (!string.IsNullOrEmpty(port))
 // =======================
 //
 
-// CORS
+// Controllers
+builder.Services.AddControllers();
+
+// 🔥 CORS – allow EVERYTHING (for dev)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -42,14 +45,9 @@ builder.Services.AddCors(options =>
     });
 });
 
-
-// Controllers
-builder.Services.AddControllers();
-
-// FluentValidation (auto-validation + hitta validators)
+// FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<Application.Validation.TaskValidation.TaskCreateDtoValidator>();
-// ^ du kan peka p� vilken validator som helst i Application.Validation s� hittas alla i samma assembly
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -57,7 +55,7 @@ builder.Services.AddSwaggerGen();
 
 //
 // =======================
-// DB CONTEXT (Render + Azure safe)
+// DATABASE
 // =======================
 //
 
@@ -74,30 +72,31 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString)
 );
 
-// Dependency Injection - Repositories
+//
+// =======================
+// DEPENDENCY INJECTION
+// =======================
+//
+
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
 
-
-// Services
 builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ExerciseService>();
 
-
-
-
-
-// Swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
-app.UseCors("AllowFrontend");   // 🔥 FÖRST
+//
+// =======================
+// MIDDLEWARE PIPELINE
+// =======================
+//
+
+app.UseCors("AllowFrontend"); // 🔥 MÅSTE VARA FÖRST
 
 app.UseRouting();
 
