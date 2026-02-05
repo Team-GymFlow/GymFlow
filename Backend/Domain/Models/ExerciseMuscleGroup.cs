@@ -1,22 +1,12 @@
-﻿using Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Entities;
 
-namespace Domain.Models
+namespace Domain.Entities;
+
+public class ExerciseMuscleGroup
 {
-    public class ExerciseMuscleGroup
-    {
-        public int Id { get; set; }
-        public int ExerciseId { get; set; }
-        public int MuscleGroupId { get; set; }
-        MuscleGroupRole MuscleGroupRole { get; set; }
-       
+    public int ExerciseId { get; set; }
+    public Exercise Exercise { get; set; } = null!;
 
-        public required Exercise Exercise { get; set; }
-        public required MuscleGroup MuscleGroup { get; set; }
-
-    }
+    public int MuscleGroupId { get; set; }
+    public MuscleGroup MuscleGroup { get; set; } = null!;
 }

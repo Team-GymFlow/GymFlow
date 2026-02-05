@@ -1,5 +1,5 @@
-﻿using Application.Services;
-using Domain.Entities;
+﻿using Application.DTOs.Users;
+using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -27,16 +27,16 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] User user)
+    public async Task<IActionResult> Create([FromBody] UserCreateDto dto)
     {
-        var created = await _service.CreateAsync(user);
+        var created = await _service.CreateAsync(dto);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, [FromBody] User user)
+    public async Task<IActionResult> Update(int id, [FromBody] UserUpdateDto dto)
     {
-        var ok = await _service.UpdateAsync(id, user);
+        var ok = await _service.UpdateAsync(id, dto);
         return ok ? NoContent() : NotFound();
     }
 

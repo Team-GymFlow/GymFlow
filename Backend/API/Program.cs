@@ -1,5 +1,7 @@
 using Application.Interfaces;
 using Application.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Infrastructure.Database;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +45,11 @@ builder.Services.AddCors(options =>
 // Controllers
 builder.Services.AddControllers();
 
+// FluentValidation (auto-validation + hitta validators)
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<Application.Validation.TaskValidation.TaskCreateDtoValidator>();
+// ^ du kan peka p� vilken validator som helst i Application.Validation s� hittas alla i samma assembly
+
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -66,58 +73,31 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString)
 );
 
-
-//
-// =======================
-// DEPENDENCY INJECTION
-// =======================
-//
-
-// Repositories
+// Dependency Injection - Repositories
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
 
 // Services
 builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<UserService>();
 
+
+
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
-//
-// =======================
-// MIDDLEWARE PIPELINE
-// =======================
-//
-
-// Show real errors (important for Render)
-app.UseDeveloperExceptionPage();
-
-app.UseRouting();
-
-app.UseCors("Frontend");
-
-// Swagger always ON
 app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "GymFlow API v1");
-    c.RoutePrefix = "swagger";
-});
+app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
 app.MapControllers();
-
-//
-// =======================
-// HEALTH CHECK
-// =======================
-//
-
-app.MapGet("/", () => "GymFlow API running 🚀");
 
 app.Run();

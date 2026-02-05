@@ -1,5 +1,6 @@
-﻿using Application.Interfaces;
-using Domain.Entities;
+﻿using Application.DTOs.Projects;
+using Application.Interfaces;
+using Application.Mappings;
 
 namespace Application.Services;
 
@@ -12,26 +13,31 @@ public class ProjectService
         _repo = repo;
     }
 
-    public Task<IEnumerable<Project>> GetAllAsync()
-        => _repo.GetAllAsync();
-
-    public Task<Project?> GetByIdAsync(int id)
-        => _repo.GetByIdAsync(id);
-
-    public async Task<Project> CreateAsync(Project project)
+    public async Task<IEnumerable<ProjectDto>> GetAllAsync()
     {
-        await _repo.AddAsync(project);
-        return project;
+        var projects = await _repo.GetAllAsync();
+        return projects.Select(p => p.ToDto());
     }
 
-    public async Task<bool> UpdateAsync(int id, Project project)
+    public async Task<ProjectDto?> GetByIdAsync(int id)
+    {
+        var project = await _repo.GetByIdAsync(id);
+        return project is null ? null : project.ToDto();
+    }
+
+    public async Task<ProjectDto> CreateAsync(ProjectCreateDto dto)
+    {
+        var entity = dto.ToEntity();
+        await _repo.AddAsync(entity);
+        return entity.ToDto();
+    }
+
+    public async Task<bool> UpdateAsync(int id, ProjectUpdateDto dto)
     {
         var existing = await _repo.GetByIdAsync(id);
         if (existing is null) return false;
 
-        existing.Name = project.Name;
-        existing.Description = project.Description;
-
+        dto.UpdateEntity(existing);
         await _repo.UpdateAsync(existing);
         return true;
     }
