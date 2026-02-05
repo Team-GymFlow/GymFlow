@@ -1,4 +1,4 @@
-const BASE = "https://gymflow-35he.onrender.com/api";
+const BASE = "http://localhost:5143/api";
 
 export const getExercises = async () => {
   const res = await fetch(`${BASE}/exercises`);

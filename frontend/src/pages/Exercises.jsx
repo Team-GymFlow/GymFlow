@@ -8,12 +8,16 @@ const Exercises = () => {
   const [exercises, setExercises] = useState([]);
 
   useEffect(() => {
-  getExercises().then(data => {
-    console.log("EXERCISES FROM API:", data);
-    setExercises(data);
-  });
+  getExercises()
+    .then(data => {
+      console.log("FETCHED:", data);
+      setExercises(data);
+    })
+    .catch(err => console.error("API ERROR:", err));
 }, []);
 
+
+console.log("STATE:", exercises);
 
   return (
     <div>
