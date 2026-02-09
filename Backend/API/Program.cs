@@ -33,22 +33,20 @@ if (!string.IsNullOrEmpty(port))
 // Controllers
 builder.Services.AddControllers();
 
-// 🔥 CORS – allow EVERYTHING (for dev)
+// ✅ CORS – allow frontend
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
         policy
             .WithOrigins(
                 "http://localhost:5173",
-                "https://gymflow-frontend.onrender.com"
+                "https://gymflow-1-frontend.onrender.com"
             )
             .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
+            .AllowAnyMethod();
     });
 });
-
 
 // FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
@@ -101,9 +99,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors();
+app.UseHttpsRedirection();
 
-app.UseRouting();
+// ✅ ACTIVATE CORS (must be before MapControllers)
+app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 
