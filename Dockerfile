@@ -2,17 +2,17 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy solution
-COPY Backend.sln ./
+# Copy solution (KORRIGERAD PATH)
+COPY Backend/Backend.sln ./
 
-# Copy project files (KORRIGERADE PATHS)
+# Copy project files
 COPY Backend/Application/Application.csproj Backend/Application/
 COPY Backend/Infrastructure/Infrastructure.csproj Backend/Infrastructure/
 COPY Backend/Domain/Domain.csproj Backend/Domain/
 COPY Backend/API/API.csproj Backend/API/
 
 # Restore dependencies
-RUN dotnet restore
+RUN dotnet restore Backend.sln
 
 # Copy everything else
 COPY . .
