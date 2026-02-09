@@ -2,23 +2,23 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy solution (KORRIGERAD PATH)
-COPY Backend/Backend.sln ./
+# Copy solution
+COPY Backend/Backend.sln ./Backend.sln
 
 # Copy project files
-COPY Backend/Application/Application.csproj Backend/Application/
-COPY Backend/Infrastructure/Infrastructure.csproj Backend/Infrastructure/
-COPY Backend/Domain/Domain.csproj Backend/Domain/
-COPY Backend/API/API.csproj Backend/API/
+COPY Backend/Application/Application.csproj Application/
+COPY Backend/Infrastructure/Infrastructure.csproj Infrastructure/
+COPY Backend/Domain/Domain.csproj Domain/
+COPY Backend/API/API.csproj API/
 
 # Restore dependencies
 RUN dotnet restore Backend.sln
 
 # Copy everything else
-COPY . .
+COPY Backend/. .
 
 # Build API
-WORKDIR /src/Backend/API
+WORKDIR /src/API
 RUN dotnet publish -c Release -o /app/publish
 
 # ===== RUNTIME STAGE =====
