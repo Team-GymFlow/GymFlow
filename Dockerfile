@@ -5,11 +5,11 @@ WORKDIR /src
 # Copy solution
 COPY Backend.sln ./
 
-# Copy project files
-COPY Application/Application.csproj Application/
-COPY Infrastructure/Infrastructure.csproj Infrastructure/
-COPY Domain/Domain.csproj Domain/
-COPY API/API.csproj API/
+# Copy project files (KORRIGERADE PATHS)
+COPY Backend/Application/Application.csproj Backend/Application/
+COPY Backend/Infrastructure/Infrastructure.csproj Backend/Infrastructure/
+COPY Backend/Domain/Domain.csproj Backend/Domain/
+COPY Backend/API/API.csproj Backend/API/
 
 # Restore dependencies
 RUN dotnet restore
@@ -18,7 +18,7 @@ RUN dotnet restore
 COPY . .
 
 # Build API
-WORKDIR /src/API
+WORKDIR /src/Backend/API
 RUN dotnet publish -c Release -o /app/publish
 
 # ===== RUNTIME STAGE =====
