@@ -15,40 +15,33 @@ public class ExercisesController : ControllerBase
         _service = service;
     }
 
-    // GET: api/exercises
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<ActionResult<List<ExerciseDto>>> GetAll()
         => Ok(await _service.GetAllAsync());
 
-    // GET: api/exercises/5
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<ActionResult<ExerciseDto>> GetById(int id)
     {
         var exercise = await _service.GetByIdAsync(id);
         return exercise is null ? NotFound() : Ok(exercise);
     }
 
-    // POST: api/exercises
+    [HttpGet("by-muscle/{muscleGroupId:int}")]
+    public async Task<ActionResult<List<ExerciseDto>>> GetByMuscle(int muscleGroupId)
+        => Ok(await _service.GetByMuscleGroupAsync(muscleGroupId));
+
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] ExerciseCreateDto dto)
+    public async Task<ActionResult<ExerciseDto>> Create([FromBody] ExerciseCreateDto dto)
     {
         var created = await _service.CreateAsync(dto);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
-    // PUT: api/exercises/5
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] ExerciseUpdateDto dto)
-    {
-        var ok = await _service.UpdateAsync(id, dto);
-        return ok ? NoContent() : NotFound();
-    }
+        => (await _service.UpdateAsync(id, dto)) ? NoContent() : NotFound();
 
-    // DELETE: api/exercises/5
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
-    {
-        var ok = await _service.DeleteAsync(id);
-        return ok ? NoContent() : NotFound();
-    }
+        => (await _service.DeleteAsync(id)) ? NoContent() : NotFound();
 }

@@ -18,6 +18,11 @@ public class TaskService
         var tasks = await _repo.GetAllAsync();
         return tasks.Select(t => t.ToDto());
     }
+        public async Task<IEnumerable<TaskDto>> GetByProjectIdAsync(int projectId)
+    {
+        var tasks = await _repo.GetByProjectIdAsync(projectId);
+        return tasks.Select(t => t.ToDto());
+    }
 
     public async Task<TaskDto?> GetByIdAsync(int id)
     {

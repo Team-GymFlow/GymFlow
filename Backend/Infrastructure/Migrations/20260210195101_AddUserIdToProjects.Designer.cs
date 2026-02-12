@@ -4,6 +4,7 @@ using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260210195101_AddUserIdToProjects")]
+    partial class AddUserIdToProjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,16 +39,13 @@ namespace Infrastructure.Migrations
                     b.Property<int>("DifficultyLevel")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercises", (string)null);
+                    b.ToTable("Exercises");
                 });
 
             modelBuilder.Entity("Domain.Entities.ExerciseMuscleGroup", b =>
@@ -60,7 +60,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("MuscleGroupId");
 
-                    b.ToTable("ExerciseMuscleGroups", (string)null);
+                    b.ToTable("ExerciseMuscleGroups");
                 });
 
             modelBuilder.Entity("Domain.Entities.MuscleGroup", b =>
@@ -77,7 +77,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MuscleGroups", (string)null);
+                    b.ToTable("MuscleGroups");
                 });
 
             modelBuilder.Entity("Domain.Entities.Project", b =>
@@ -102,7 +102,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("Domain.Entities.TaskItem", b =>
@@ -134,7 +134,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Tasks", (string)null);
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -155,7 +155,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Domain.Entities.ExerciseMuscleGroup", b =>

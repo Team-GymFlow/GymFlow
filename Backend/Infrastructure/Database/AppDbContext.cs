@@ -5,10 +5,7 @@ namespace Infrastructure.Database;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options)
-    {
-    }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     public DbSet<Exercise> Exercises => Set<Exercise>();
     public DbSet<MuscleGroup> MuscleGroups => Set<MuscleGroup>();
@@ -23,7 +20,7 @@ public class AppDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<ExerciseMuscleGroup>()
-                    .HasKey(emg => new { emg.ExerciseId, emg.MuscleGroupId });
+            .HasKey(emg => new { emg.ExerciseId, emg.MuscleGroupId });
 
         modelBuilder.Entity<ExerciseMuscleGroup>()
             .HasOne(emg => emg.Exercise)
@@ -40,5 +37,14 @@ public class AppDbContext : DbContext
             .WithOne(t => t.Project)
             .HasForeignKey(t => t.ProjectId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // ✅ User-konfig
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
+        modelBuilder.Entity<User>()
+            .Property(u => u.Role)
+            .HasDefaultValue("User");
     }
 }

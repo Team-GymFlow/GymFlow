@@ -3,26 +3,29 @@ using Domain.Entities;
 
 namespace Application.Mappings;
 
-public static class ProjectMapping
+public static class ProjectMappings
 {
-    public static ProjectDto ToDto(this Project project)
-        => new()
-        {
-            Id = project.Id,
-            Name = project.Name,
-            Description = project.Description
-        };
-
     public static Project ToEntity(this ProjectCreateDto dto)
-        => new()
+    {
+        return new Project
         {
             Name = dto.Name,
-            Description = dto.Description
+            UserId = dto.UserId   
         };
+    }
 
-    public static void UpdateEntity(this ProjectUpdateDto dto, Project project)
+    public static ProjectDto ToDto(this Project entity)
     {
-        project.Name = dto.Name;
-        project.Description = dto.Description;
+        return new ProjectDto
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            UserId = entity.UserId
+        };
+    }
+
+    public static void UpdateEntity(this ProjectUpdateDto dto, Project entity)
+    {
+        entity.Name = dto.Name;
     }
 }

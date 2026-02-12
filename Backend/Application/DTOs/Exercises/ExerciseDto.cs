@@ -5,7 +5,12 @@ public class ExerciseDto
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
+    public string? YouTubeUrl { get; set; }
 
-    // Vi skickar enum som text ut till Swagger: "Easy", "Medium", "Hard"
-    public string DifficultyLevel { get; set; } = "Easy";
+
+    public int DifficultyLevel { get; set; }  // 1..3
+
+    public string? ImageUrl { get; set; }     // ✅ NYTT
+
+    public List<int> MuscleGroupIds { get; set; } = new(); // ✅ NYTT
 }

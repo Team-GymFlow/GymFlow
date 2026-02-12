@@ -14,6 +14,13 @@ public class TaskRepository : ITaskRepository
         _context = context;
     }
 
+    public async Task<IEnumerable<TaskItem>> GetByProjectIdAsync(int projectId)
+    {
+        return await _context.Tasks
+            .Where(t => t.ProjectId == projectId)
+            .ToListAsync();
+    }
+
     public async Task<IEnumerable<TaskItem>> GetAllAsync()
         => await _context.Tasks.ToListAsync();
 

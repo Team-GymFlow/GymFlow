@@ -1,113 +1,113 @@
 using Application.Interfaces;
 using Application.Services;
-using FluentValidation;
-using FluentValidation.AspNetCore;
+using System.Security.Claims;
+using System.Text;
 using Infrastructure.Database;
-using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//
-// =======================
-// RENDER PORT FIX
-// =======================
-//
-
-var port = Environment.GetEnvironmentVariable("PORT");
-
-if (!string.IsNullOrEmpty(port))
-{
-    builder.WebHost.ConfigureKestrel(options =>
-    {
-        options.ListenAnyIP(int.Parse(port));
-    });
-}
-
-//
-// =======================
-// SERVICES
-// =======================
-//
-
-// Controllers
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
 
-// ✅ CORS – allow frontend
-builder.Services.AddCors(options =>
+// Swagger + JWT "Authorize" knapp
+builder.Services.AddSwaggerGen(c =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        policy
-            .WithOrigins(
-                "http://localhost:5173",
-                "https://gymflow-1-frontend.onrender.com"
-            )
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Klistra in ENDAST token här (utan 'Bearer ')"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
     });
 });
 
-// FluentValidation
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddValidatorsFromAssemblyContaining<Application.Validation.TaskValidation.TaskCreateDtoValidator>();
-
-// Swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-//
-// =======================
-// DATABASE
-// =======================
-//
-
-var connectionString =
-    builder.Configuration.GetConnectionString("DefaultConnection") ??
-    Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
-
-if (string.IsNullOrEmpty(connectionString))
+// CORS (frontend)
+builder.Services.AddCors(options =>
 {
-    throw new Exception("❌ DefaultConnection missing in Render environment");
-}
+    options.AddPolicy("Frontend", p =>
+        p.AllowAnyOrigin()
+         .AllowAnyHeader()
+         .AllowAnyMethod());
+});
 
+// DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString)
-);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//
-// =======================
-// DEPENDENCY INJECTION
-// =======================
-//
-
-builder.Services.AddScoped<ITaskRepository, TaskRepository>();
-builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
-
-builder.Services.AddScoped<TaskService>();
+// DI för dina services (ligger i Application)
+builder.Services.AddScoped<JwtTokenService>();
+builder.Services.AddScoped<PasswordService>();
 builder.Services.AddScoped<ProjectService>();
+builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ExerciseService>();
 
+// Infrastructure Repositories
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
+
+// JWT config
+var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key saknas");
+var issuer = builder.Configuration["Jwt:Issuer"] ?? "GymFlow";
+var audience = builder.Configuration["Jwt:Audience"] ?? "GymFlow";
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+
+            // Viktigt för [Authorize(Roles="Admin")]
+            RoleClaimType = ClaimTypes.Role,
+            NameClaimType = ClaimTypes.NameIdentifier
+        };
+    });
+
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseCors("Frontend");
 
-app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI();
 
-// ✅ ACTIVATE CORS (must be before MapControllers)
-app.UseCors("AllowFrontend");
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.MapGet("/", () => "GymFlow API running 🚀");
-
 app.Run();

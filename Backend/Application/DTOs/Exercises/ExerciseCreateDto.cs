@@ -5,6 +5,11 @@ public class ExerciseCreateDto
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
 
-    // 1=Easy, 2=Medium, 3=Hard
+    public string? ImageUrl { get; set; }
+    public string? YouTubeUrl { get; set; }
+
+
     public int? DifficultyLevel { get; set; }
+    public List<int>? MuscleGroupIds { get; set; }
+
 }

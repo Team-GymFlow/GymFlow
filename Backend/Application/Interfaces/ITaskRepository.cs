@@ -9,4 +9,6 @@ public interface ITaskRepository
     Task AddAsync(TaskItem task);
     Task UpdateAsync(TaskItem task);
     Task DeleteAsync(TaskItem task);
+    Task<IEnumerable<TaskItem>> GetByProjectIdAsync(int projectId);
+
 }

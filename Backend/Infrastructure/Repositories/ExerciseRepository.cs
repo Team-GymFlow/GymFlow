@@ -40,4 +40,13 @@ public class ExerciseRepository : IExerciseRepository
         await _db.SaveChangesAsync();
         return true;
     }
+
+    public async Task<List<Exercise>> GetByMuscleGroupAsync(int muscleGroupId)
+    {
+        return await _db.ExerciseMuscleGroups
+            .Where(x => x.MuscleGroupId == muscleGroupId)
+            .Select(x => x.Exercise)
+            .Distinct()
+            .ToListAsync();
+    }
 }

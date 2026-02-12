@@ -22,12 +22,12 @@ public class ProjectService
     public async Task<ProjectDto?> GetByIdAsync(int id)
     {
         var project = await _repo.GetByIdAsync(id);
-        return project is null ? null : project.ToDto();
+        return project?.ToDto();
     }
 
     public async Task<ProjectDto> CreateAsync(ProjectCreateDto dto)
     {
-        var entity = dto.ToEntity();
+        var entity = dto.ToEntity(); // måste sätta UserId i mapping
         await _repo.AddAsync(entity);
         return entity.ToDto();
     }
