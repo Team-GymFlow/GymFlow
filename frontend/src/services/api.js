@@ -1,18 +1,25 @@
-const BASE = "https://gymflow-35he.onrender.com/api";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const getExercises = async () => {
-  const res = await fetch(`${BASE}/exercises`);
+async function request(path, options = {}) {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+    ...options,
+  });
+
+  const text = await res.text();
+  const data = text ? JSON.parse(text) : null;
+
   if (!res.ok) {
-    throw new Error("Failed to fetch exercises");
+    const msg = data?.message || data?.title || `HTTP ${res.status}`;
+    throw new Error(msg);
   }
 
-  const data = await res.json();
+  return data;
+}
 
-  // 🔧 ASP.NET Core / EF Core collection fix
-  if (Array.isArray(data)) return data;
-  if (data.$values) return data.$values;
-  if (data.data) return data.data;
-
-  console.error("Unexpected API shape:", data);
-  return [];
+export const api = {
+  get: (path) => request(path),
+  post: (path, body) => request(path, { method: "POST", body: JSON.stringify(body) }),
+  put: (path, body) => request(path, { method: "PUT", body: JSON.stringify(body) }),
+  del: (path) => request(path, { method: "DELETE" }),
 };

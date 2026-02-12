@@ -1,15 +1,8 @@
 import { api } from "./api";
 
-export async function getProjects() {
-  const res = await api.get("/api/Projects");
-  return res.data;
-}
+const unwrap = (res) => res?.data ?? res;
 
-export async function createProject(payload) {
-  const res = await api.post("/api/Projects", payload);
-  return res.data;
-}
-
-export async function deleteProject(id) {
-  await api.delete(`/api/Projects/${id}`);
-}
+export const getProjects = async () => unwrap(await api.get("/projects"));
+export const createProject = async (payload) => unwrap(await api.post("/projects", payload));
+export const updateProject = async (id, payload) => unwrap(await api.put(`/projects/${Number(id)}`, payload));
+export const deleteProject = async (id) => unwrap(await api.del(`/projects/${Number(id)}`));
