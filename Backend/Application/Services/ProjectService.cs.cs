@@ -25,9 +25,12 @@ public class ProjectService
         return project?.ToDto();
     }
 
-    public async Task<ProjectDto> CreateAsync(ProjectCreateDto dto)
+    // ✅ MÅSTE vara 2 argument
+    public async Task<ProjectDto> CreateAsync(ProjectCreateDto dto, int userId)
     {
-        var entity = dto.ToEntity(); // måste sätta UserId i mapping
+        var entity = dto.ToEntity();
+        entity.UserId = userId;
+
         await _repo.AddAsync(entity);
         return entity.ToDto();
     }

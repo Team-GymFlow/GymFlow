@@ -10,7 +10,8 @@ public static class ProjectMappings
         return new Project
         {
             Name = dto.Name,
-            UserId = dto.UserId   
+            Description = dto.Description
+            // UserId sätts i service från token
         };
     }
 
@@ -20,6 +21,7 @@ public static class ProjectMappings
         {
             Id = entity.Id,
             Name = entity.Name,
+            Description = entity.Description,
             UserId = entity.UserId
         };
     }
@@ -27,5 +29,6 @@ public static class ProjectMappings
     public static void UpdateEntity(this ProjectUpdateDto dto, Project entity)
     {
         entity.Name = dto.Name;
+        entity.Description = dto.Description;
     }
 }

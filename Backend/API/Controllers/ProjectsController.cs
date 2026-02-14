@@ -2,6 +2,7 @@
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API.Controllers;
 
@@ -10,36 +11,43 @@ namespace API.Controllers;
 public class ProjectsController : ControllerBase
 {
     private readonly ProjectService _service;
-    private readonly TaskService _taskService;
 
-    public ProjectsController(ProjectService service, TaskService taskService)
+    public ProjectsController(ProjectService service)
     {
         _service = service;
-        _taskService = taskService;
     }
 
     // ✅ Alla får läsa
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> GetAll()
+    public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAll()
         => Ok(await _service.GetAllAsync());
 
     // ✅ Alla får läsa
     [HttpGet("{id:int}")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<ActionResult<ProjectDto>> GetById(int id)
     {
         var project = await _service.GetByIdAsync(id);
-        return project is null ? NotFound() : Ok(project);
+        if (project is null) return NotFound();
+        return Ok(project);
     }
 
     // 🔒 Bara Admin får skapa
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Create([FromBody] ProjectCreateDto dto)
+    public async Task<ActionResult<ProjectDto>> Create([FromBody] ProjectCreateDto dto)
     {
-        var created = await _service.CreateAsync(dto);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        var userIdClaim =
+            User.FindFirstValue(ClaimTypes.NameIdentifier) ??
+            User.FindFirstValue("nameid") ??
+            User.FindFirstValue("sub");
+
+        if (!int.TryParse(userIdClaim, out var userId))
+            return Unauthorized("Invalid user id in token.");
+
+        var created = await _service.CreateAsync(dto, userId);
+        return Ok(created);
     }
 
     // 🔒 Bara Admin får uppdatera
@@ -48,25 +56,17 @@ public class ProjectsController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromBody] ProjectUpdateDto dto)
     {
         var ok = await _service.UpdateAsync(id, dto);
-        return ok ? NoContent() : NotFound();
+        if (!ok) return NotFound();
+        return NoContent();
     }
 
-    // 🔒 Bara Admin får radera
+    // 🔒 Bara Admin får ta bort
     [HttpDelete("{id:int}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var ok = await _service.DeleteAsync(id);
-        return ok ? NoContent() : NotFound();
-    }
-
-    // (Valfritt) Om du vill att ALLA ska få se tasks, låt den vara AllowAnonymous.
-    // Vill du att bara Admin ska se tasks? Byt till [Authorize(Roles="Admin")]
-    [HttpGet("{projectId:int}/tasks")]
-    [AllowAnonymous]
-    public async Task<IActionResult> GetTasksForProject(int projectId)
-    {
-        var tasks = await _taskService.GetByProjectIdAsync(projectId);
-        return Ok(tasks);
+        if (!ok) return NotFound();
+        return NoContent();
     }
 }
