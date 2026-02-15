@@ -9,7 +9,8 @@ public class ExerciseCreateDto
     public string? YouTubeUrl { get; set; }
 
 
-    public int? DifficultyLevel { get; set; }
+    public int DifficultyLevel { get; set; }
+
     public List<int>? MuscleGroupIds { get; set; }
 
 }

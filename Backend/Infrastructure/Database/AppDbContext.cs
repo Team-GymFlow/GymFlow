@@ -14,11 +14,16 @@ public class AppDbContext : DbContext
     public DbSet<TaskItem> Tasks => Set<TaskItem>();
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<User> Users => Set<User>();
+    
+    
+    // NYTT: Favorites
+    public DbSet<UserFavorite> UserFavorites => Set<UserFavorite>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
+        // ExerciseMuscleGroup (many-to-many)
         modelBuilder.Entity<ExerciseMuscleGroup>()
             .HasKey(emg => new { emg.ExerciseId, emg.MuscleGroupId });
 
@@ -32,13 +37,14 @@ public class AppDbContext : DbContext
             .WithMany(m => m.ExerciseMuscleGroups)
             .HasForeignKey(emg => emg.MuscleGroupId);
 
+        // Project -> Tasks (one-to-many)
         modelBuilder.Entity<Project>()
             .HasMany(p => p.Tasks)
             .WithOne(t => t.Project)
             .HasForeignKey(t => t.ProjectId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // ✅ User-konfig
+        // User config
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
             .IsUnique();
@@ -46,5 +52,21 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>()
             .Property(u => u.Role)
             .HasDefaultValue("User");
+
+        // NYTT: UserFavorite (many-to-many User <-> Exercise)
+        modelBuilder.Entity<UserFavorite>()
+            .HasKey(uf => new { uf.UserId, uf.ExerciseId });
+
+        modelBuilder.Entity<UserFavorite>()
+            .HasOne(uf => uf.User)
+            .WithMany(u => u.UserFavorites)
+            .HasForeignKey(uf => uf.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<UserFavorite>()
+            .HasOne(uf => uf.Exercise)
+            .WithMany(e => e.UserFavorites)
+            .HasForeignKey(uf => uf.ExerciseId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

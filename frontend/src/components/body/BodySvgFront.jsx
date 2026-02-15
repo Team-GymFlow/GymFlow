@@ -6,23 +6,30 @@ export default function BodySvgFront({
 }) {
   const base = {
     cursor: "pointer",
-    transition: "opacity 120ms ease, transform 120ms ease",
+    transition: "all 0.2s ease",
   };
 
   const fillFor = (id) => {
-    if (selectedId === id) return "rgba(79,70,229,0.55)"; // selected
-    if (hoveredId === id) return "rgba(79,70,229,0.35)"; // hover
-    return "rgba(255,255,255,0.10)";
+    if (selectedId === id) return "#6366f1"; // selected (solid indigo)
+    if (hoveredId === id) return "#6366f1";  // hover (lighter indigo)
+    return "rgba(255,255,255,0.08)";
   };
 
   const strokeFor = (id) => {
-    if (selectedId === id) return "rgba(79,70,229,0.9)";
-    if (hoveredId === id) return "rgba(79,70,229,0.7)";
+    if (selectedId === id) return "#a5b4fc";
+    if (hoveredId === id) return "#818cf8";
     return "rgba(255,255,255,0.18)";
   };
 
-  // ✅ IDs matchar din DB:
-  // 1 Chest, 3 Shoulders, 8 Abs, 6 Quads
+  const glowFor = (id) => {
+    if (selectedId === id)
+      return "drop-shadow(0 0 12px rgba(79,70,229,0.8))";
+    if (hoveredId === id)
+      return "drop-shadow(0 0 8px rgba(99,102,241,0.8))";
+    return "none";
+  };
+
+  // DB IDs
   const muscles = [
     {
       id: 1,
@@ -30,7 +37,7 @@ export default function BodySvgFront({
       d: "M110 120 C140 95, 180 95, 210 120 C180 135, 140 135, 110 120 Z",
     },
 
-    // Shoulders (vänster + höger) -> samma id 3
+    // Shoulders (vänster + höger)
     {
       id: 3,
       name: "Shoulders",
@@ -42,14 +49,14 @@ export default function BodySvgFront({
       d: "M210 110 C220 85, 235 85, 250 110 C235 120, 220 120, 210 110 Z",
     },
 
-    // Abs -> id 8
+    // Abs
     {
       id: 8,
       name: "Abs",
       d: "M140 145 C155 135, 165 135, 180 145 L175 210 C165 220, 155 220, 145 210 Z",
     },
 
-    // Quads (vänster + höger) -> samma id 6
+    // Quads
     { id: 6, name: "Quads", d: "M135 220 L155 220 L150 310 L130 310 Z" },
     { id: 6, name: "Quads", d: "M165 220 L185 220 L190 310 L170 310 Z" },
   ];
@@ -62,7 +69,7 @@ export default function BodySvgFront({
       role="img"
       aria-label="Body front muscles"
     >
-      {/* body silhouette */}
+      {/* HEAD */}
       <path
         d="M165 40
            C150 40, 140 50, 140 65
@@ -72,6 +79,8 @@ export default function BodySvgFront({
         fill="rgba(255,255,255,0.06)"
         stroke="rgba(255,255,255,0.15)"
       />
+
+      {/* BODY SILHOUETTE */}
       <path
         d="M120 95
            C95 115, 90 150, 105 175
@@ -87,12 +96,15 @@ export default function BodySvgFront({
         stroke="rgba(255,255,255,0.15)"
       />
 
-      {/* clickable muscle areas */}
+      {/* MUSCLES */}
       {muscles.map((m, idx) => (
         <path
           key={`${m.id}-${idx}`}
           d={m.d}
-          style={base}
+          style={{
+            ...base,
+            filter: glowFor(m.id),
+          }}
           fill={fillFor(m.id)}
           stroke={strokeFor(m.id)}
           strokeWidth="2"

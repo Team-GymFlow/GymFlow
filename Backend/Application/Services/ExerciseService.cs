@@ -24,13 +24,21 @@ public class ExerciseService
         var exercise = await _repo.GetByIdAsync(id);
         return exercise is null ? null : exercise.ToDto();
     }
+public async Task<ExerciseDto> CreateAsync(ExerciseCreateDto dto)
+{
+    var exercise = dto.ToEntity();
 
-    public async Task<ExerciseDto> CreateAsync(ExerciseCreateDto dto)
-    {
-        var entity = dto.ToEntity();
-        var created = await _repo.AddAsync(entity);
-        return created.ToDto();
-    }
+    // 🔥 Lägg till kopplingar manuellt
+    exercise.ExerciseMuscleGroups = dto.MuscleGroupIds
+        .Select(id => new ExerciseMuscleGroup
+        {
+            MuscleGroupId = id
+        }).ToList();
+
+    var created = await _repo.AddAsync(exercise);
+
+    return created.ToDto();
+}
 
     public async Task<bool> UpdateAsync(int id, ExerciseUpdateDto dto)
     {

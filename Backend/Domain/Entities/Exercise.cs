@@ -1,18 +1,20 @@
-﻿using Domain.Enums;
-
-namespace Domain.Entities;
-
+﻿namespace Domain.Entities;
+using Domain.Enums;
 public class Exercise
 {
-    public int Id { get; set; }
+    
 
-    public string Name { get; set; } = string.Empty;
+    public int Id { get; set; }
+    public string Name { get; set; } = null!;
     public string? Description { get; set; }
+    public DifficultyLevel DifficultyLevel { get; set; }// 1=Easy, 2=Medium, 3=Hard
     public string? ImageUrl { get; set; }
     public string? YouTubeUrl { get; set; }
 
+    // Navigation properties
+    public ICollection<ExerciseMuscleGroup> ExerciseMuscleGroups { get; set; } = new List<ExerciseMuscleGroup>();
 
-    public DifficultyLevel DifficultyLevel { get; set; } = DifficultyLevel.Easy;
-
-    public List<ExerciseMuscleGroup> ExerciseMuscleGroups { get; set; } = new();
+    
+    // NYTT: Favorites
+    public ICollection<UserFavorite> UserFavorites { get; set; } = new List<UserFavorite>();
 }

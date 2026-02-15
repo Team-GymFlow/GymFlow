@@ -16,9 +16,9 @@ public class ExerciseCreateDtoValidator : AbstractValidator<ExerciseCreateDto>
             .MaximumLength(500).WithMessage("Description must not exceed 500 characters.")
             .When(x => !string.IsNullOrWhiteSpace(x.Description));
 
-        RuleFor(x => x.DifficultyLevel)
-            .InclusiveBetween(1, 3)
-            .WithMessage("DifficultyLevel must be between 1 and 3.")
-            .When(x => x.DifficultyLevel.HasValue);
+       RuleFor(x => x.DifficultyLevel)
+    .InclusiveBetween(1, 3)
+    .WithMessage("DifficultyLevel must be 1, 2 or 3.");
+
     }
 }

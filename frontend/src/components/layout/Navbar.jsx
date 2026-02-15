@@ -1,46 +1,81 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../auth/AuthContext";
 
-const linkStyle = ({ isActive }) => ({
-  marginRight: "1rem",
-  textDecoration: "none",
-  color: isActive ? "#4f46e5" : "inherit",
-  fontWeight: isActive ? "bold" : "normal",
-});
+export default function Navbar() {
+  const { isLoggedIn, login, logout } = useAuth();
 
-const Navbar = () => {
   return (
-    <nav
+    <header
       style={{
-        padding: "1rem 1.5rem",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        borderBottom: "1px solid #e5e7eb",
+        backgroundColor: "#111",
+        borderBottom: "1px solid #222",
+        padding: "1rem 0",
       }}
     >
-      <span style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
-        GymFlow
-      </span>
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        {/* Logo */}
+        <Link
+          to="/"
+          style={{
+            fontSize: "1.4rem",
+            fontWeight: "bold",
+            color: "#fff",
+          }}
+        >
+          GymFlow
+        </Link>
 
-      <div>
-        <NavLink to="/" end style={linkStyle}>
-          Home
-        </NavLink>
-        <NavLink to="/projects" style={linkStyle}>
-          Projects
-        </NavLink>
-        <NavLink to="/users" style={linkStyle}>
-          Users
-        </NavLink>
-        <NavLink to="/exercises" style={linkStyle}>
-          Exercises
-        </NavLink>
-        <NavLink to="/muscles" style={linkStyle}>
-          Muscles
-        </NavLink>
+        {/* Right side */}
+        <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+          <Link style={{ color: "#ccc" }} to="/muscles">
+            Muscles
+          </Link>
+
+          {isLoggedIn && (
+            <Link style={{ color: "#ccc" }} to="/my-exercises">
+              My Exercises
+            </Link>
+          )}
+
+          {!isLoggedIn ? (
+            <button
+              onClick={login}
+              style={{
+                backgroundColor: "#2563eb",
+                border: "none",
+                padding: "8px 16px",
+                borderRadius: "6px",
+                color: "white",
+                cursor: "pointer",
+              }}
+            >
+              Login
+            </button>
+          ) : (
+            <button
+              onClick={logout}
+              style={{
+                backgroundColor: "#dc2626",
+                border: "none",
+                padding: "8px 16px",
+                borderRadius: "6px",
+                color: "white",
+                cursor: "pointer",
+              }}
+            >
+              Logout
+            </button>
+          )}
+        </div>
       </div>
-    </nav>
+    </header>
   );
-};
-
-export default Navbar;
+}

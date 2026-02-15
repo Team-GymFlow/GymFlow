@@ -10,4 +10,5 @@ public class ExerciseUpdateDto
 
 
     public int? DifficultyLevel { get; set; }
+
 }

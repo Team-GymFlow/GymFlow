@@ -11,4 +11,7 @@ public class User
     public string Role { get; set; } = "User";
 
     public string PasswordHash { get; set; } = null!;
+
+    // Navigation property för favorites
+    public ICollection<UserFavorite> UserFavorites { get; set; } = new List<UserFavorite>();
 }

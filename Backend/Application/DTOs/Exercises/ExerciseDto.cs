@@ -1,4 +1,6 @@
 namespace Application.DTOs.Exercises;
+using Domain.Enums;
+
 
 public class ExerciseDto
 {
@@ -8,7 +10,7 @@ public class ExerciseDto
     public string? YouTubeUrl { get; set; }
 
 
-    public int DifficultyLevel { get; set; }  // 1..3
+   public int DifficultyLevel { get; set; }
 
     public string? ImageUrl { get; set; }     // ✅ NYTT
 
