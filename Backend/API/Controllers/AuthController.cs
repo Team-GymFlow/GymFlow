@@ -1,8 +1,8 @@
 using Application.DTOs.Auth;
+using Application.Interfaces;
 using Application.Services;
-using Infrastructure.Database;
+using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
@@ -10,13 +10,13 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly AppDbContext _db;
+    private readonly IUserRepository _userRepo;
     private readonly JwtTokenService _jwt;
     private readonly PasswordService _pw;
 
-    public AuthController(AppDbContext db, JwtTokenService jwt, PasswordService pw)
+    public AuthController(IUserRepository userRepo, JwtTokenService jwt, PasswordService pw)
     {
-        _db = db;
+        _userRepo = userRepo;
         _jwt = jwt;
         _pw = pw;
     }
@@ -28,12 +28,13 @@ public class AuthController : ControllerBase
         var name = dto.Name?.Trim();
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(dto.Password))
-            return BadRequest("Email och lösenord krävs.");
+            return BadRequest("Email and password are required.");
 
-        var exists = await _db.Users.AnyAsync(u => u.Email == email);
-        if (exists) return BadRequest("Email finns redan.");
+        var existing = await _userRepo.GetByEmailAsync(email);
+        if (existing != null)
+            return BadRequest("Email already exists.");
 
-        var user = new Domain.Entities.User
+        var user = new User
         {
             Email = email,
             Name = string.IsNullOrWhiteSpace(name) ? "User" : name,
@@ -41,10 +42,9 @@ public class AuthController : ControllerBase
             PasswordHash = _pw.Hash(dto.Password)
         };
 
-        _db.Users.Add(user);
-        await _db.SaveChangesAsync();
+        await _userRepo.AddAsync(user);
 
-        return Ok("User skapad.");
+        return Ok("User created.");
     }
 
     [HttpPost("login")]
@@ -53,13 +53,14 @@ public class AuthController : ControllerBase
         var email = dto.Email?.Trim().ToLower();
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(dto.Password))
-            return Unauthorized("Fel email eller lösenord.");
+            return Unauthorized("Wrong email or password.");
 
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
-        if (user is null) return Unauthorized("Fel email eller lösenord.");
+        var user = await _userRepo.GetByEmailAsync(email);
+        if (user is null)
+            return Unauthorized("Wrong email or password.");
 
         if (!_pw.Verify(user.PasswordHash, dto.Password))
-            return Unauthorized("Fel email eller lösenord.");
+            return Unauthorized("Wrong email or password.");
 
         var token = _jwt.CreateToken(user);
 

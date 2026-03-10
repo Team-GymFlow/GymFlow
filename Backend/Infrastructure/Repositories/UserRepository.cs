@@ -29,6 +29,9 @@ public class UserRepository : IUserRepository
             .ThenInclude(uf => uf.Exercise)
             .FirstOrDefaultAsync(u => u.Id == id);
 
+    public async Task<User?> GetByEmailAsync(string email)
+        => await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
     public async Task AddAsync(User user)
     {
         _context.Users.Add(user);

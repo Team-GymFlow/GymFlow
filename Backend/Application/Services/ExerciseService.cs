@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Exercises;
 using Application.Interfaces;
 using Application.Mappings;
+using Domain.Entities;
 
 namespace Application.Services;
 

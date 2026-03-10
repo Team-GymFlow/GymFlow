@@ -1,0 +1,19 @@
+# .NET
+bin/
+obj/
+node_modules/
+*.exe
+*.dll
+*.pdb
+
+# Node
+node_modules/
+
+# Env
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
