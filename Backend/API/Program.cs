@@ -101,19 +101,21 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Seed database with exercises
-try
-{
-    using var scope = app.Services.CreateScope();
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await DbSeeder.SeedAsync(db);
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Seeding skipped: {ex.Message}");
-}
-
 app.UseCors("Frontend");
+
+// Seed endpoint - call POST /api/seed once to populate database
+app.MapPost("/api/seed", async (AppDbContext db) =>
+{
+    try
+    {
+        await DbSeeder.SeedAsync(db);
+        return Results.Ok("Database seeded successfully.");
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Seeding failed: {ex.Message}");
+    }
+});
 
 if (app.Environment.IsDevelopment())
 {
