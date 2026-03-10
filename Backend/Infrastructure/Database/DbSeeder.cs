@@ -11,13 +11,24 @@ public static class DbSeeder
         // Seed MuscleGroups if empty
         if (!await db.MuscleGroups.AnyAsync())
         {
-            await db.Database.ExecuteSqlRawAsync(@"
-                SET IDENTITY_INSERT MuscleGroups ON;
-                INSERT INTO MuscleGroups (Id, Name) VALUES
-                    (1, 'Chest'), (2, 'Biceps'), (3, 'Shoulders'), (4, 'Triceps'),
-                    (5, 'Back'), (6, 'Quads'), (7, 'Hamstrings'), (8, 'Abs');
-                SET IDENTITY_INSERT MuscleGroups OFF;
-            ");
+            try
+            {
+                await db.Database.ExecuteSqlRawAsync(@"
+                    SET IDENTITY_INSERT MuscleGroups ON;
+                    INSERT INTO MuscleGroups (Id, Name) VALUES
+                        (1, 'Chest'), (2, 'Biceps'), (3, 'Shoulders'), (4, 'Triceps'),
+                        (5, 'Back'), (6, 'Quads'), (7, 'Hamstrings'), (8, 'Abs');
+                    SET IDENTITY_INSERT MuscleGroups OFF;
+                ");
+            }
+            catch
+            {
+                // Fallback: let DB assign IDs
+                var names = new[] { "Chest", "Biceps", "Shoulders", "Triceps", "Back", "Quads", "Hamstrings", "Abs" };
+                foreach (var name in names)
+                    db.MuscleGroups.Add(new MuscleGroup { Name = name });
+                await db.SaveChangesAsync();
+            }
         }
 
         // Seed exercises if empty or only garbage data
