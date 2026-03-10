@@ -15,10 +15,14 @@ public class ExerciseRepository : IExerciseRepository
     }
 
     public async Task<List<Exercise>> GetAllAsync()
-        => await _db.Exercises.ToListAsync();
+        => await _db.Exercises
+            .Include(e => e.ExerciseMuscleGroups)
+            .ToListAsync();
 
     public async Task<Exercise?> GetByIdAsync(int id)
-        => await _db.Exercises.FirstOrDefaultAsync(x => x.Id == id);
+        => await _db.Exercises
+            .Include(e => e.ExerciseMuscleGroups)
+            .FirstOrDefaultAsync(x => x.Id == id);
 
     public async Task<Exercise> AddAsync(Exercise exercise)
     {
@@ -45,6 +49,8 @@ public class ExerciseRepository : IExerciseRepository
     {
         return await _db.ExerciseMuscleGroups
             .Where(x => x.MuscleGroupId == muscleGroupId)
+            .Include(x => x.Exercise)
+                .ThenInclude(e => e.ExerciseMuscleGroups)
             .Select(x => x.Exercise)
             .Distinct()
             .ToListAsync();

@@ -101,6 +101,13 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+// Seed database with exercises
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await DbSeeder.SeedAsync(db);
+}
+
 app.UseCors("Frontend");
 
 if (app.Environment.IsDevelopment())
